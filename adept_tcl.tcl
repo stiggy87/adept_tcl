@@ -1,25 +1,27 @@
-# Write Package OrCAD
+# Adept Export Tool
 # Engineer: Steve Grace
-# Description: This script will generate the MGT output of Xilinx FPGAs
-# in a format that matches ADEPT table design
+# Description: This is a package that does the equivalent of
+# exporting Excel/CSV files of Jim Wu's Adept Tool
 
 # BEGIN USER MODIFICATION
 # Modify this block of code to point to other packages needed
-# set MYREPOPATH {C:/Tcl/usr_lib/tcom/lib/}
-# puts $auto_path
-# lappend auto_path $MYREPOPATH
-# set user_pkg_list [list tcom]
+set MYREPOPATH {lib/tcom}
+#puts $auto_path
+lappend auto_path [file join "[pwd]/$MYREPOPATH"]
+puts $auto_path
+set user_pkg_list [list tcom]
 # END USER MODIFICATION
 
 # Require these packages
 set default_pkg_list [list cmdline csv struct::matrix]
-#set pkg_list [concat $user_pkg_list $default_pkg_list]
-set pkg_list $default_pkg_list
+set pkg_list [concat $user_pkg_list $default_pkg_list]
+#set pkg_list $default_pkg_list
 # END USER MODIFICATION
+
 foreach pkg $pkg_list {
 	if {[catch {package require $pkg} _msg]} {
-		puts "Package $pkg is not in the path for tcllib. Please add it and try again"
-		exit 1
+		puts "Package $pkg was nto loaded."
+		#exit 1
 	} else {
 		puts "Loaded Package: $pkg"
 	}
@@ -47,6 +49,7 @@ proc adept_tcl::write_pkgorcad { args } {
 	
 	set file $options(file)
 	set force $options(force)
+	set return_string $options(return_string)
 	
 	# Create matrix object
 	struct::matrix orcadm
